@@ -1,0 +1,12 @@
+Bootstrap: shub
+FROM: singularityhub/ubuntu
+
+%runscript
+	exec echo "Hello from ubuntu world"
+
+%labels
+	AUTHOR Mahesh Vangala
+
+%post
+	apt-get update -y &&
+	apt-get install -y vim
