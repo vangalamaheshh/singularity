@@ -6,17 +6,24 @@ FROM: continuumio/miniconda3
 
 %files
 	public_mm_linux_main_2018.tar.bz2 /opt
+	requirements.txt /opt
 
 %environment
 	export JAVA_HOME=/opt/conda
-	export PATH=/opt/public_mm/bin:$PATH
+	export PATH=/opt/public_mm/bin:/opt/conda/bin:$PATH
 
 %post
-	/opt/conda/bin/conda install --yes -c cyclus java-jdk &&
-  /opt/conda/bin/conda install --yes virtualenv &&
+	conda install --yes -c cyclus java-jdk &&
+        conda install --yes virtualenv &&
 	cd /opt &&
 	bunzip2 public_mm_linux_main_2018.tar.bz2 &&
 	tar -xvf public_mm_linux_main_2018.tar &&
 	cd public_mm &&
-	./bin/install.sh
-	
+	./bin/install.sh &&
+	chmod -R 777 /opt/public_mm/MedPost-SKR/Tagger_server/log &&
+	chmod -R 777 /opt/public_mm/WSD_Server/log &&
+	cd /opt &&
+	virtualenv vNLP &&
+	chmod -R 755 vNLP &&
+	./vNLP/bin/activate &&
+	pip install -r requirements.txt
