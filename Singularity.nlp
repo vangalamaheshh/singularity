@@ -1,0 +1,22 @@
+Bootstrap: docker
+FROM: continuumio/miniconda3
+
+%labels 
+	AUTHOR Mahesh Vangala
+
+%files
+	public_mm_linux_main_2018.tar.bz2 /opt
+
+%environment
+	export JAVA_HOME=/opt/conda
+	export PATH=/opt/public_mm/bin:$PATH
+
+%post
+	/opt/conda/bin/conda install --yes -c cyclus java-jdk &&
+  /opt/conda/bin/conda install --yes virtualenv &&
+	cd /opt &&
+	bunzip2 public_mm_linux_main_2018.tar.bz2 &&
+	tar -xvf public_mm_linux_main_2018.tar &&
+	cd public_mm &&
+	./bin/install.sh
+	
